@@ -5,62 +5,53 @@
         static void Main(string[] args)
         {
             Console.WriteLine("Starting Simulator\n");
-            Lab4a();
-            Lab4b();
-
+            Lab5a();
+            
+            Console.ReadLine();
 
         }
-        static void Lab4a()
+        static void Lab5a()
         {
-            Console.WriteLine("HUNT TEST\n");
-            var o = new Orc() { Name = "Gorbag", Rage = 7 };
-            o.SayHi();
-            for (int i = 0; i < 10; i++)
+            try
             {
-                o.Hunt();
-                o.SayHi();
+                Rectangle pros1 = new Rectangle(3, 3, 9, 9);
+                Console.WriteLine("Utworzono prostokąt" + pros1.ToString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error : " + ex.Message);
+            }
+            try
+            {
+                Rectangle pros2 = new Rectangle(5, 5, 5, 8);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Error : " + ex.Message);
             }
 
-            Console.WriteLine("\nSING TEST\n");
-            var e = new Elf("Legolas", agility: 2);
-            e.SayHi();
-            for (int i = 0; i < 10; i++)
+            try
             {
-                e.Sing();
-                e.SayHi();
+
+                Point p1 = new Point(3, 3);
+                Point p2 = new Point(6, 8);
+                Rectangle pros3 = new Rectangle(p1, p2);
+                Console.WriteLine("Prostokąt utworzony z punktów: " + pros3.ToString());
+
+                Point puntkDoSprawdzenia= new Point(4, 4);
+                Console.WriteLine($"Czy {pros3} zawiera punkt {puntkDoSprawdzenia}? " + pros3.Contains(puntkDoSprawdzenia));
+
+                Point punktSpoza= new Point(10, 12);
+                Console.WriteLine($"Czy {pros3} zawiera punkt {punktSpoza}? " + pros3.Contains(punktSpoza));
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Error : " + ex.Message);
             }
 
-            Console.WriteLine("\nPOWER TEST\n");
-            Creature[] creatures = {
-        o,
-        e,
-        new Orc("Morgash", 3, 8),
-        new Elf("Elandor", 5, 3)
-    };
-            foreach (Creature creature in creatures)
-            {
-                Console.WriteLine($"{creature.Name,-15}: {creature.Power}");
-            }
         }
 
-        static void Lab4b()
-        {
-            object[] myObjects = {
-        new Animals() { Description = "dogs"},
-        new Birds { Description = "  eagles ", Size = 10 },
-        new Elf("e", 15, -3),
-        new Orc("morgash", 6, 4)
-    };
-            Console.WriteLine("\nMy objects:");
-            foreach (var o in myObjects) Console.WriteLine(o);
-            /*
-                My objects:
-                ANIMALS: Dogs <3>
-                BIRDS: Eagles (fly+) <10>
-                ELF: E## [10][0]
-                ORC: Morgash [6][4]
-            */
-        }
+        
 
     }
 }
