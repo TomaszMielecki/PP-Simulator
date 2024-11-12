@@ -1,4 +1,6 @@
-﻿namespace Simulator
+﻿using Simulator.Maps;
+
+namespace Simulator
 {
     internal class Program
     {
@@ -6,6 +8,7 @@
         {
             Console.WriteLine("Starting Simulator\n");
             Lab5a();
+            Lab5b();
             
             Console.ReadLine();
 
@@ -51,7 +54,42 @@
 
         }
 
-        
+        static void Lab5b()
+        {
+            try
+            {
+                SmallSquareMap mapa1 = new SmallSquareMap(12);
+                Console.WriteLine("Utworzyłeś mapę o rozmiarze : " + mapa1.Size); // sprawdzamy czy mozna utworzyc
+
+            }
+
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Console.WriteLine("Error : " + ex.Message);
+            }
+
+            try
+            {
+                SmallSquareMap mapa2 = new SmallSquareMap(13);
+                Point start = new Point(3, 3);
+                Point next = mapa2.Next(start, Direction.Left);
+                Console.WriteLine($"Ruch w lewo punkt z {start} do {next}"); // sprawdzamy czy można się poruszać w linii prostej
+
+                Point diagonal = mapa2.NextDiagonal(start, Direction.Right);
+                Console.WriteLine($"Na ukos w prawo do góry, punkt z {start} do {diagonal}"); // sprawdzamy czy można się poruszać na ukos
+
+                Point pozaMapa = new Point(12, 12);
+                Point calkowiciePozaMapa = mapa2.Next(pozaMapa, Direction.Up);
+                Console.WriteLine($"Po ruchu poza mapę punkt z {pozaMapa} do {calkowiciePozaMapa} - powinien zostać ten sam"); // sprawdzamy czy granica mapy działa
+            }
+
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Console.WriteLine("Error : " + ex.Message);
+            }
+        }
+
+
 
     }
 }
