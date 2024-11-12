@@ -26,7 +26,7 @@ public readonly struct Point
         }
     }
 
-    // 45 degrees rotation
+    // ! 45 degrees rotation
     public Point NextDiagonal(Direction direction)
     {
         switch (direction)

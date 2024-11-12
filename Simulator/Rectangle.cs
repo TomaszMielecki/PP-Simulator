@@ -15,6 +15,7 @@
             Y2 = Math.Max(y1, y2);
         }
 
+
         public Rectangle(Point p1, Point p2) : this(p1.X, p1.Y, p2.X, p2.Y) { }
 
         public bool Contains(Point point)
