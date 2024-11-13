@@ -58,7 +58,7 @@ namespace Simulator
         }
         public abstract string Info { get; }
         public abstract int Power { get; }
-        public abstract void SayHi();
+        public abstract string Greeting();
         public override string ToString()
         {
             return $"{GetType().Name.ToUpper()}: {Info}";
@@ -73,24 +73,20 @@ namespace Simulator
             }
         }
 
-        public void Go(Direction direction)
-        {
-            string lowerdirection = direction.ToString().ToLower();
-            Console.WriteLine($"{Name} goes {lowerdirection}.");
-        }
+        public string Go(Direction direction) => $"{direction.ToString().ToLower()}";
+        
 
-        public void Go(Direction[] directions)
+      
+        public string[] Go(Direction[] directions)
         {
-            foreach (Direction direction in directions)
+            var result = new string[directions.Length];
+            for (int i = 0; i < directions.Length; i++)
             {
-                Go(direction);
+                result[i] = Go(directions[i]);
             }
+        return result ;
         }
 
-        public void Go(string directions)
-        {
-            var directionArray = DirectionParser.Parse(directions);
-            Go(directionArray);
-        }
+        public string[] Go(string directionSeq) => Go(DirectionParser.Parse(directionSeq));
     }
 }

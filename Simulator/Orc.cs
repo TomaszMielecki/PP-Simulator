@@ -24,14 +24,13 @@ public class Orc : Creature
 
     public override string Info => $"{Name} [{Level}][{Rage}]";
 
-    public override void SayHi()
+    public override string Greeting()
     {
-        Console.WriteLine($"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.");
+        return $"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.";
     }
-
     public void Hunt()
     {
-        Console.WriteLine($"{Name} is hunting.");
+       
         _huntCounter++;
         if (_huntCounter % 2 == 0)
         {
