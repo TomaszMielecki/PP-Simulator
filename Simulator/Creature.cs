@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simulator.Maps;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,6 +10,29 @@ namespace Simulator
 {
     public abstract class Creature
     {
+
+        public Map? Map { get; private set; }
+
+        public Point Position { get; private set; }
+
+        public void InitMapAndPosition(Map map, Point position)
+        {
+            if (Map != null)
+                throw new InvalidOperationException("Ten stwór jest już przypisany do mapy.");
+
+            if (map == null)
+                throw new ArgumentNullException("Mapa nie może być null.");
+
+            if (!map.Exist(position))
+                throw new ArgumentException("Ta pozycja nie jest prawidłowa na tej mapie.", nameof(position));
+
+
+            Map = map;
+            Position = position;
+
+            map.Add(this, position);
+        }
+
         private string _name = "Unkown";
 
         private int _level = 1;
@@ -73,20 +97,30 @@ namespace Simulator
             }
         }
 
-        public string Go(Direction direction) => $"{direction.ToString().ToLower()}";
-        
-
-      
-        public string[] Go(Direction[] directions)
+        public string Go(Direction direction)
         {
-            var result = new string[directions.Length];
-            for (int i = 0; i < directions.Length; i++)
+            if (Map == null)
             {
-                result[i] = Go(directions[i]);
+                throw new InvalidOperationException("Stwór nie jest przypisany do żadnej mapy.");
             }
-        return result ;
-        }
+            Point newPosition = Map.Next(Position, direction);
 
-        public string[] Go(string directionSeq) => Go(DirectionParser.Parse(directionSeq));
+            if (!Map.Exist(newPosition))
+            {
+                throw new InvalidOperationException("Nowa pozycja nie znajduje się w granicach mapy");
+            }
+
+            var creaturesAtNewPosition = Map.At(newPosition);
+
+            if (creaturesAtNewPosition != null && creaturesAtNewPosition.Count > 0)
+            {
+                throw new InvalidOperationException("Nowa pozycja jest zajęta przez inne stwory.");
+            }
+            
+
+            Map.Move(this, Position, newPosition);
+            Position = newPosition;
+            return $"{Name} goes {direction.ToString().ToLower()}.";
+        }
     }
 }

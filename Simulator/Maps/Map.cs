@@ -9,6 +9,15 @@ namespace Simulator.Maps
     /// 
     public abstract class Map
     {
+        // Add(Creature, Point)
+
+        // Remove(Creature, Point)
+
+        // Move()
+
+        // At(Point) albo x, y x2
+
+
         private readonly Rectangle _map;
         public int SizeX { get; private set; }
         public int SizeY { get; private set; }
@@ -49,5 +58,20 @@ namespace Simulator.Maps
         /// <param name="d">Direction.</param>
         /// <returns>Next point.</returns>
         public abstract Point NextDiagonal(Point p, Direction d);
+
+        public abstract void Add(Creature creature, Point position);
+
+        public abstract void Remove(Creature creature, Point position);
+
+        public void Move(Creature creature, Point from, Point to)
+        {
+            if (!Exist(from) || !Exist(to)) throw new ArgumentException("Jedna z pozycji znajduje się poza mapą!");
+            Remove(creature, from);
+            Add(creature, to);
+        }
+
+        public abstract List<Creature>? At(Point position);
+
+        public abstract List<Creature>? At(int x, int y);
     }
 }
