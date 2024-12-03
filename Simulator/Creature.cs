@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Simulator
 {
-    public abstract class Creature
+    public abstract class Creature : IMappable
     {
 
         public Map? Map { get; private set; }
@@ -97,7 +97,7 @@ namespace Simulator
             }
         }
 
-        public string Go(Direction direction)
+        public void Go(Direction direction)
         {
             if (Map == null)
             {
@@ -120,7 +120,7 @@ namespace Simulator
 
             Map.Move(this, Position, newPosition);
             Position = newPosition;
-            return $"{Name} goes {direction.ToString().ToLower()}.";
+            //return $"{Name} goes {direction.ToString().ToLower()}.";
         }
     }
 }
