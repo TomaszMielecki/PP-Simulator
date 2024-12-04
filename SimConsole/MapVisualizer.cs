@@ -10,7 +10,7 @@ namespace SimConsole
 {
     public class MapVisualizer
     {
-        private Map _map;
+        private readonly Map _map;
 
         public MapVisualizer(Map map)
         {
@@ -45,7 +45,25 @@ namespace SimConsole
                     }
                     else if (creaturesAtPosition.Count == 1)
                     {
-                        Console.Write(creaturesAtPosition[0] is Orc ? "O" : "E");
+                        var creature = creaturesAtPosition[0];
+
+                        if (creature is Orc)
+                        {
+                            Console.Write("O");
+                        }
+                        else if (creature is Elf)
+                        {
+                            Console.Write("E");
+                        }
+                        else if (creature is Birds bird)
+                        {
+
+                            Console.Write(bird.Symbol);
+                        }
+                        else if (creature is Animals)
+                        {
+                            Console.Write("A");
+                        }
                     }
                     else
                     {

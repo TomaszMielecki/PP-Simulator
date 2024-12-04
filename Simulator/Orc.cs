@@ -7,6 +7,8 @@ public class Orc : Creature
     private int _huntCounter = 0;
     private int _rage;
 
+    public override char Symbol => 'O';
+
     public Orc(string name = "Unknown", int level = 1, int rage = 1) : base(name, level)
     {
         Name = name;

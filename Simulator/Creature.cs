@@ -13,25 +13,9 @@ namespace Simulator
 
         public Map? Map { get; private set; }
 
-        public Point Position { get; private set; }
+        public Point? Position { get; private set; }
 
-        public void InitMapAndPosition(Map map, Point position)
-        {
-            if (Map != null)
-                throw new InvalidOperationException("Ten stwór jest już przypisany do mapy.");
-
-            if (map == null)
-                throw new ArgumentNullException("Mapa nie może być null.");
-
-            if (!map.Exist(position))
-                throw new ArgumentException("Ta pozycja nie jest prawidłowa na tej mapie.", nameof(position));
-
-
-            Map = map;
-            Position = position;
-
-            map.Add(this, position);
-        }
+        public abstract char Symbol { get; }
 
         private string _name = "Unkown";
 
@@ -42,25 +26,7 @@ namespace Simulator
             get => _name;
             init
             {
-                string trimname = value.Trim();
-                if (trimname.Length < 3)
-                {
-                    trimname = trimname.PadRight(3, '#');
-                }
-                if (trimname.Length > 25)
-                {
-                    trimname = trimname.Substring(0, 25).TrimEnd();
-                    if (trimname.Length < 3)
-                    {
-                        trimname = trimname.PadRight(3, '#');
-                    }
-                }
-                if (char.IsLower(trimname[0]))
-                {
-                    trimname = char.ToUpper(trimname[0]) + trimname.Substring(1);
-                }
-
-                _name = trimname;
+                _name = Validator.Shortener(value, 3, 25, '#');
             }
 
         }
@@ -88,6 +54,23 @@ namespace Simulator
             return $"{GetType().Name.ToUpper()}: {Info}";
         }
 
+        public void InitMapAndPosition(Map map, Point position)
+        {
+            if (Map != null)
+                throw new InvalidOperationException("Ten stwór jest już przypisany do mapy.");
+
+            if (map == null)
+                throw new ArgumentNullException("Mapa nie może być null.");
+
+            if (!map.Exist(position))
+                throw new ArgumentException("Ta pozycja nie jest prawidłowa na tej mapie.", nameof(position));
+
+
+            Map = map;
+            Position = position;
+
+            map.Add(this, position);
+        }
 
         public void Upgrade()
         {

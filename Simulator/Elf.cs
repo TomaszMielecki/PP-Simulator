@@ -7,6 +7,8 @@ public class Elf : Creature
     private int _singCounter = 0;
     private int _agility;
 
+    public override char Symbol => 'E';
+
     public Elf()
     {
     }
