@@ -1,95 +1,84 @@
 ﻿using Simulator.Maps;
 using Simulator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace SimConsole
+namespace SimConsole;
+
+public class MapVisualizer
 {
-    public class MapVisualizer
+    private Map _map;
+
+    public MapVisualizer(Map map)
     {
-        private readonly Map _map;
+        _map = map;
+    }
 
-        public MapVisualizer(Map map)
+    public void Draw()
+    {
+        Console.Clear();
+        Console.OutputEncoding = Encoding.UTF8;
+
+
+        Console.Write(Box.TopLeft);
+        for (int x = 0; x < _map.SizeX; x++)
         {
-            _map = map;
+            Console.Write(Box.Horizontal);
         }
+        Console.WriteLine(Box.TopRight);
 
-        public void Draw()
+
+        for (int y = 0; y < _map.SizeY; y++)
         {
-            Console.Clear();
-            Console.OutputEncoding = Encoding.UTF8;
+            Console.Write(Box.Vertical);
 
-            Console.Write(Box.TopLeft);
             for (int x = 0; x < _map.SizeX; x++)
             {
-                Console.Write(Box.Horizontal);
-            }
-            Console.WriteLine(Box.TopRight);
+                var creaturesAtPosition = _map.At(x, y);
 
-            for (int y = 0; y < _map.SizeY; y++)
-            {
-                Console.Write(Box.Vertical);
-
-                for (int x = 0; x < _map.SizeX; x++)
+                if (creaturesAtPosition == null || creaturesAtPosition.Count == 0)
                 {
-                    var creaturesAtPosition = _map.At(x, y);
+                    Console.Write(" ");
+                }
+                else if (creaturesAtPosition.Count > 1)
+                {
+                    Console.Write("X");
+                }
+                else
+                {
+                    var creature = creaturesAtPosition[0];
 
-                    //wyjątek na null, dopytaj na zajęciach
-
-                    if (creaturesAtPosition.Count > 1)
+                    if (creature is Orc orc)
                     {
-                        Console.Write("X");
+                        Console.Write(orc.Symbol);
                     }
-                    else if (creaturesAtPosition.Count == 1)
+                    else if (creature is Elf elf)
                     {
-                        var creature = creaturesAtPosition[0];
-
-                        if (creature is Orc)
-                        {
-                            Console.Write("O");
-                        }
-                        else if (creature is Elf)
-                        {
-                            Console.Write("E");
-                        }
-                        else if (creature is Birds bird)
-                        {
-
-                            Console.Write(bird.Symbol);
-                        }
-                        else if (creature is Animals)
-                        {
-                            Console.Write("A");
-                        }
+                        Console.Write(elf.Symbol);
+                    }
+                    else if (creature is Birds bird)
+                    {
+                        Console.Write(bird.Symbol);
+                    }
+                    else if (creature is Animals animal)
+                    {
+                        Console.Write(animal.Symbol);
                     }
                     else
                     {
-                        Console.Write(" ");
+                        Console.Write("?");
                     }
-                }
-
-                Console.WriteLine(Box.Vertical);
-
-                if (y < _map.SizeY - 1)
-                {
-                    Console.Write(Box.MidLeft);
-                    for (int x = 0; x < _map.SizeX; x++)
-                    {
-                        Console.Write(Box.Horizontal);
-                    }
-                    Console.WriteLine(Box.MidRight);
                 }
             }
 
-            Console.Write(Box.BottomLeft);
-            for (int x = 0; x < _map.SizeX; x++)
-            {
-                Console.Write(Box.Horizontal);
-            }
-            Console.WriteLine(Box.BottomRight);
+            Console.WriteLine(Box.Vertical);
         }
+
+
+        Console.Write(Box.BottomLeft);
+        for (int x = 0; x < _map.SizeX; x++)
+        {
+            Console.Write(Box.Horizontal);
+        }
+        Console.WriteLine(Box.BottomRight);
     }
 }
