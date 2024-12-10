@@ -2,6 +2,7 @@
 
 public interface IMappable
 {
+    Map? Map { get; }
     Point Position { get; }
     char Symbol { get; }
 

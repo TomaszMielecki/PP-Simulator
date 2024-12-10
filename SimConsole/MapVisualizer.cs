@@ -13,7 +13,18 @@ public class MapVisualizer
         _map = map;
     }
 
-    public void Draw()
+    public void Draw(bool clearConsole = true)
+    {
+        if (clearConsole)
+        {
+            Console.Clear();
+        }
+
+
+        DrawMap();
+    }
+
+    public void DrawMap()
     {
         Console.Clear();
         Console.OutputEncoding = Encoding.UTF8;

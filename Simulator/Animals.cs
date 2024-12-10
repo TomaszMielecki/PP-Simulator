@@ -48,7 +48,7 @@ public class Animals : IMappable
     public virtual void InitMapAndPosition(Map map, Point point)
     {
         if (map == null) throw new ArgumentNullException(nameof(map));
-        if (Map != null) throw new InvalidOperationException("This animal is already on a map.");
+        
         if (!map.Exist(point)) throw new ArgumentException("Non-existing position for this map.");
         Map = map;
         Position = point;

@@ -63,8 +63,7 @@ public abstract class Creature : IMappable
 
     public void InitMapAndPosition(Map map, Point position)
     {
-        if (Map != null)
-            throw new InvalidOperationException("Ten stwór jest już przypisane do mapy.");
+        
 
         if (map == null)
             throw new ArgumentNullException("Mapa nie może być null.");
