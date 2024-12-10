@@ -1,42 +1,43 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Simulator;
+﻿using Simulator;
+using System.Reflection.Emit;
+using System.Xml.Linq;
 
 public class Orc : Creature
 {
-    private int _huntCounter = 0;
-    private int _rage;
-
     public override char Symbol => 'O';
-
-    public Orc(string name = "Unknown", int level = 1, int rage = 1) : base(name, level)
-    {
-        Name = name;
-        Level = level;
-        Rage = rage;
-    }
+    private int _rage;
+    private int _huntCount = 0;
 
     public int Rage
     {
         get => _rage;
-        init => _rage = Validator.Limiter(value, 0, 10);
+        set => _rage = Validator.Limiter(value, 0, 10);
     }
 
-    public override int Power => Level * 7 + Rage * 3;
 
-    public override string Info => $"{Name} [{Level}][{Rage}]";
-
-    public override string Greeting()
-    {
-        return $"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.";
-    }
     public void Hunt()
     {
-       
-        _huntCounter++;
-        if (_huntCounter % 2 == 0)
-        {
-            _rage++;
-        }
+
+    }
+
+    public Orc() : base() { }
+
+    public Orc(string name, int level = 1, int rage = 1)
+        : base(name, level)
+    {
+        Rage = rage;
+    }
+
+    public new string Greeting { get; set; }
+
+
+    public override int Power
+    {
+        get { return 7 * Level + 3 * Rage; }
+    }
+
+    public override string Info
+    {
+        get { return $"{Name} [{Level}][{Rage}]"; }
     }
 }

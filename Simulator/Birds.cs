@@ -1,46 +1,23 @@
-﻿using Simulator;
-using System.Drawing;
+﻿using Simulator.Maps;
+
+namespace Simulator;
 
 public class Birds : Animals
 {
-    public bool CanFly { get; init; } = true;
-
-    public override char Symbol => CanFly ? 'B' : 'b';
+    public bool CanFly { get; set; } = true;
 
     public override string Info
     {
         get
         {
-            string flyStatus = CanFly ? "fly+" : "fly-";
-            return $"{Description} ({flyStatus}) <{Size}>";
+            string flyStatus = CanFly ? "(fly+)" : "(fly-)";
+            return $"{Description} {flyStatus} <{Size}>";
         }
     }
 
-    public override void Go(Direction direction)
-    {
-        if (Map == null || Position == null)
-            throw new InvalidOperationException("Ptak nie znajduje się na mapie");
+    public override char Symbol => CanFly ? 'B' : 'b';
 
-        if (CanFly)
-        {
-            var firstStep = Map.Next(Position.Value, direction);
-            var secondStep = Map.Next(firstStep, direction);
-
-            if (Map.Exist(secondStep))
-            {
-                Map.Move(this, Position.Value, secondStep);
-                Position = secondStep;
-            }
-        }
-        else
-        {
-            var diagonalStep = Map.NextDiagonal(Position.Value, direction);
-
-            if (Map.Exist(diagonalStep))
-            {
-                Map.Move(this, Position.Value, diagonalStep);
-                Position = diagonalStep;
-            }
-        }
-    }
+    protected override Point GetNewPosition(Direction direction) => CanFly
+        ? Map.Next(Map.Next(Position, direction), direction)
+        : Map.NextDiagonal(Position, direction);
 }
