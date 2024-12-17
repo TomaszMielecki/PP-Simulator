@@ -2,7 +2,7 @@
 
 public abstract class BigMap : Map
 {
-    private readonly Dictionary<Point, List<IMappable>> _fields;
+    
 
     public BigMap(int sizeX, int sizeY) : base(sizeX, sizeY)
     {
@@ -12,7 +12,7 @@ public abstract class BigMap : Map
         if (sizeY > 1000)
             throw new ArgumentOutOfRangeException(nameof(sizeY), "Map too high. Max hight is 1000.");
 
-        _fields = new Dictionary<Point, List<IMappable>>();
+        
     }
 
     
