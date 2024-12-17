@@ -106,6 +106,11 @@ namespace Simulator.Maps
             return _fields[position.X, position.Y];
         }
 
-        public abstract List<IMappable>? At(int x, int y);
+        public List<IMappable>? At(int x, int y)
+        {
+            if (x < 0 || x >= SizeX || y < 0 || y >= SizeY)
+                throw new ArgumentOutOfRangeException("Coordinates are out of map bounds.");
+            return _fields[x, y];
+        }
     }
 }

@@ -9,67 +9,42 @@ namespace Simulator
 {
     public class SimulationHistory
     {
-        private readonly List<SimulationState> _history = new List<SimulationState>();
-        private readonly Simulation _simulation;
+        private Simulation _simulation { get; }
+        public int SizeX { get; }
+        public int SizeY { get; }
+        public List<SimulationTurnLog> TurnLogs { get; } = [];
+        // store starting positions at index 0
 
         public SimulationHistory(Simulation simulation)
         {
-            _simulation = simulation;
+            _simulation = simulation ??
+                throw new ArgumentNullException(nameof(simulation));
+            SizeX = _simulation.Map.SizeX;
+            SizeY = _simulation.Map.SizeY;
+            Run();
         }
 
-        public void SaveState(int turn)
+        private void Run()
         {
-            var state = new SimulationState
+            while (true)
             {
-                Turn = turn,
-                ObjectPositions = new Dictionary<IMappable, Point>(),
-                CurrentMove = _simulation.CurrentMoveName,
-                CurrentMappable = _simulation.CurrentMappable
-            };
+                var symbols = new Dictionary<Point, char>();
 
-
-            foreach (var creature in _simulation.IMappables)
-            {
-                state.ObjectPositions[creature] = creature.Position;
-            }
-
-            _history.Add(state);
-        }
-
-        public void Replay(int turn)
-        {
-            Console.Clear();
-
-            var state = _history.FirstOrDefault(s => s.Turn == turn);
-            if (state != null)
-            {
-
-                foreach (var creature in _simulation.IMappables)
+                foreach (var mappable in _simulation.IMappables)
                 {
-                    _simulation.Map.Remove(creature, creature.Position);
+                    symbols[mappable.Position] = symbols.ContainsKey(mappable.Position) ? 'X' : mappable.Symbol;
                 }
 
-                foreach (var entry in state.ObjectPositions)
+                TurnLogs.Add(new SimulationTurnLog
                 {
-                    entry.Key.InitMapAndPosition(_simulation.Map, entry.Value);
-                }
+                    Mappable = _simulation.CurrentMappable?.ToString() ?? string.Empty,
+                    Move = _simulation.CurrentMoveName ?? string.Empty,
+                    Symbols = symbols
+                });
 
-                Console.WriteLine($"Replaying turn {turn}, move: {state.CurrentMove.ToUpper()}");
+                if (_simulation.Finished) break;
 
-                Console.WriteLine($"Next Move: {state.CurrentMappable.GetType().Name} will move {state.CurrentMove.ToUpper()}");
+                _simulation.Turn();
             }
-            else
-            {
-                Console.WriteLine($"No state found for turn {turn}");
-            }
-        }
-
-        private class SimulationState
-        {
-            public int Turn { get; set; }
-            public Dictionary<IMappable, Point> ObjectPositions { get; set; }
-            public string CurrentMove { get; set; }
-            public IMappable CurrentMappable { get; set; }
-        }
     }
 }
