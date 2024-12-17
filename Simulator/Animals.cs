@@ -62,6 +62,6 @@ public class Animals : IMappable
 
     public override string ToString()
     {
-        return $"{GetType().Name.ToUpper()}: {Info}";
+        return $"{Symbol}: {GetType().Name.ToUpper()}";
     }
 }
